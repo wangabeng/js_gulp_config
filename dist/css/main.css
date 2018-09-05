@@ -1,0 +1,6 @@
+.test {
+  background-color: pink;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}

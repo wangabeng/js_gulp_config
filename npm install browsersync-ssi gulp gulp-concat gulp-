@@ -1,0 +1,4 @@
+npm install browsersync-ssi gulp gulp-concat gulp-minify gulp-plumber gulp-sass gulp-zip --save-dev
+
+
+gulp-livereload
