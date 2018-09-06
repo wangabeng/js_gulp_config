@@ -12,7 +12,8 @@ var gulp        = require('gulp'),
     zip         = require('gulp-zip'),
     postcss      = require('gulp-postcss'),
     autoprefixer = require('gulp-autoprefixer'),
-    pump         = require('pump');   
+    pump         = require('pump'),
+    traceur = require('gulp-traceur'); // ES6转ES5
 
 // 端口为3000的本地服务
 gulp.task('serve', function() {
@@ -49,10 +50,11 @@ gulp.task('sass', function(){
 // 处理css 自动添加兼容 
 gulp.task('css', function(){
   return gulp.src('app/css/*.css')
-    .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
+    // css文件用sublime的alt+shift+ctrl+p 自动补全 不需要自动补全
+    // .pipe(autoprefixer({
+    //         browsers: ['last 2 versions'],
+    //         cascade: false
+    //     }))
     .pipe(gulp.dest('dist/css'))
     .pipe(reload({ stream:true }));
 });
@@ -60,7 +62,18 @@ gulp.task('css', function(){
 
 // 处理js javscript files operate
 gulp.task('js', function() {
-   var jsSrc = ['app/js/*.js'];
+   var jsSrc = ['app/js/*.js', '!app/js/jquery1.10.2.js'];
+
+   return gulp.src(jsSrc)
+       // .pipe(uglify())    //压缩
+       .pipe(traceur()) // ES6转换
+       .pipe(gulp.dest('dist/js'))
+       .pipe(reload({ stream:true }));  //输出
+});
+
+// 处理jquery(因为jquery出现编译错误 所以jquery不执行ES6编译)
+gulp.task('jquery', function() {
+   var jsSrc = ['app/js/jquery1.10.2.js'];
 
    return gulp.src(jsSrc)
        // .pipe(uglify())    //压缩
@@ -93,6 +106,14 @@ gulp.task('fonts', function() {
         .pipe(browserSync.stream());
 });
 
+// 处理layer
+gulp.task('layer', function() {
+    
+    return gulp.src("app/layer/**")
+        .pipe(gulp.dest("dist/layer/"))
+        .pipe(browserSync.stream());
+});
+
 // publish (未测试 无此需求)
 // gulp.task('publish', function(){
 //     return gulp.src('dist/**/*')
@@ -102,4 +123,4 @@ gulp.task('fonts', function() {
 // });
 
 // 编辑默认任务
-gulp.task('default', ['sass', 'css', 'js', 'html', 'img', 'fonts', 'serve']);
+gulp.task('default', ['sass', 'css', 'js','jquery', 'html', 'img', 'fonts', 'serve', 'layer']);

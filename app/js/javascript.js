@@ -1,4 +1,5 @@
-function abc () {
-  console.log('ddd');
-}
-abc();
+{{{{
+  let insane = 'Hello World outer';
+  {insane = 'Hello World inner';console.log('inner' + insane)}
+  console.log('outer' + insane)
+}}}};
