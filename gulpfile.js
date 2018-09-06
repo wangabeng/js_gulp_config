@@ -1,19 +1,20 @@
 'use strict';
 
-var gulp        = require('gulp'),
-    browserSync = require('browser-sync').create(),
-    reload = browserSync.reload,
-    SSI         = require('browsersync-ssi'),
-    concat      = require('gulp-concat'),
-    minify      = require('gulp-minify'),
-    uglify      = require('gulp-uglify'),
-    plumber     = require('gulp-plumber'),
-    sass        = require('gulp-sass'),
-    zip         = require('gulp-zip'),
+var gulp         = require('gulp'),
+    browserSync  = require('browser-sync').create(),
+    reload       = browserSync.reload,
+    SSI          = require('browsersync-ssi'),
+    concat       = require('gulp-concat'),
+    minify       = require('gulp-minify'),
+    uglify       = require('gulp-uglify'),
+    plumber      = require('gulp-plumber'),
+    sass         = require('gulp-sass'),
+    zip          = require('gulp-zip'),
     postcss      = require('gulp-postcss'),
     autoprefixer = require('gulp-autoprefixer'),
     pump         = require('pump'),
-    traceur = require('gulp-traceur'); // ES6转ES5
+    babel        = require('gulp-babel')
+    traceur      = require('gulp-traceur'); // ES6转ES5
 
 // 端口为3000的本地服务
 gulp.task('serve', function() {
@@ -60,25 +61,45 @@ gulp.task('css', function(){
 });
 
 
-// 处理js javscript files operate
+// 处理 不需要ES6转换的js javscript files operate
 gulp.task('js', function() {
-   var jsSrc = ['app/js/*.js', '!app/js/jquery1.10.2.js'];
+   var jsSrc = ['app/js/*.js', '!app/js/*.es6.js'];
 
    return gulp.src(jsSrc)
        // .pipe(uglify())    //压缩
-       .pipe(traceur()) // ES6转换
        .pipe(gulp.dest('dist/js'))
        .pipe(reload({ stream:true }));  //输出
+
 });
 
-// 处理jquery(因为jquery出现编译错误 所以jquery不执行ES6编译)
-gulp.task('jquery', function() {
-   var jsSrc = ['app/js/jquery1.10.2.js'];
+// 处理 ES6编译 用traceur
+// gulp.task('js_es6', function() {
+//    var jsSrc = ['app/js/*.es6.js'];
+
+//    return gulp.src(jsSrc)
+//        .pipe(traceur()) // ES6转换
+//        // .pipe(uglify({
+//        //      preserveComments: 'all' 
+//        // }))
+//        .pipe(gulp.dest('dist/js'))
+//        .pipe(reload({ stream:true }));  //输出
+   
+// });
+
+// 处理 ES6编译 用babel  安装 npm install --save-dev gulp-babel @babel/core @babel/preset-env
+gulp.task('js_es6', function() {
+   var jsSrc = ['app/js/*.es6.js'];
 
    return gulp.src(jsSrc)
-       // .pipe(uglify())    //压缩
+       .pipe(babel({
+            presets: ['@babel/env']//presets字段设定转码规则
+       })) // ES6转换
+       .pipe(uglify({
+            preserveComments: 'no' 
+       }))
        .pipe(gulp.dest('dist/js'))
        .pipe(reload({ stream:true }));  //输出
+   
 });
 
 // 处理 html 文件
@@ -123,4 +144,4 @@ gulp.task('layer', function() {
 // });
 
 // 编辑默认任务
-gulp.task('default', ['sass', 'css', 'js','jquery', 'html', 'img', 'fonts', 'serve', 'layer']);
+gulp.task('default', ['sass', 'css', 'js','js_es6', 'html', 'img', 'fonts', 'serve', 'layer']);

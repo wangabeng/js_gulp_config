@@ -1,0 +1,297 @@
+
+/* 公共头部 总高0.88rem */
+.m-head {
+  width: 6.4rem;
+  background: -webkit-linear-gradient(left, #f9bcdd , #fe93af);
+  text-align: center;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  padding: .12rem 0;
+}
+.m-head .head-more {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .16rem;
+}
+.m-head .head-more i {
+  font-size: .4rem;
+  color: #fff;
+  padding: .09rem;
+  border-radius: 50%;
+}
+.m-head .input-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+.m-head .input-wrapper input {
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid #fff;
+  width: 4.32rem;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  height: .58rem;
+  border-radius: .58rem;
+  padding-left: .3rem;
+  padding-right: .58rem;
+  font-size: .25rem;
+}
+.m-head .input-wrapper input::-webkit-input-placeholder{
+  color:#fff;
+}
+.m-head .input-wrapper input::-moz-input-placeholder{
+  color:#fff;
+}
+.m-head .input-wrapper input::-ms-input-placeholder{
+  color:#fff;
+}
+.m-head .input-wrapper i {
+  color: #fff;
+  position: absolute;
+  font-size: .3rem;
+  right: 0;
+  top: 0;
+  width: .58rem;
+  height: .58rem;
+  line-height: .58rem;
+  text-align: center;
+  border-radius: 50%;
+}
+.m-head .head-index {
+  color: #fff;
+  margin-left: .16rem;
+}
+.m-head .head-index img {
+  width: .64rem;
+  height: .64rem;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+/*主体内容包裹类 主要设置上下padding间距*/
+.main-wrapper {
+  padding-bottom: 1.2rem;
+}
+.main-wrapper-padding-top {
+  padding-top: .88rem;
+}
+.main-wrapper-padding-bottom {
+  padding-top: .12rem;
+}
+
+/*公共底部 总高1.2rem*/
+.m-footer {
+  width: 6.4rem;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  margin-left: -3.2rem;
+  z-index: 100;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  border-top: 1px solid #f1f1f1;
+}
+.m-footer ul.m-footer-nav {
+  height: 1.1rem;
+  background-color: #fff;
+}
+.m-footer ul.m-footer-nav>li {
+  float: left;
+  text-align: center;
+  width: 25%;
+  position: relative;
+  height: 1.1rem;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+}
+.m-footer ul.m-footer-nav>li>a {
+  display: inline-block;
+  width: 100%;
+  height: 1.0rem;
+  padding-top: .14rem;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+}
+.m-footer ul.m-footer-nav>li img {
+  width: .43rem;
+  height: .43rem;
+}
+.m-footer ul.m-footer-nav>li p {
+  font-size: .23rem;
+}
+/*底部导航下拉菜单*/
+.m-footer ul.m-footer-navlist {
+  position: absolute;
+  left: .05rem;
+  bottom: 100%;
+  background: red;
+  width: 1.5rem;
+  z-index: 100;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  border: 1px solid #f1f1f1;
+  border-bottom: none;
+  background: #fff;
+  text-align: center;
+  padding: .1rem .05rem 0;
+  border-top-left-radius:.06rem;
+  border-top-right-radius:.06rem;
+  display: none;
+}
+.m-footer ul.m-footer-navlist li {
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  border-bottom: 1px solid rgba(219,63,105,.2);
+}
+.m-footer ul.m-footer-navlist li:last-child {
+  border-bottom: none;
+}
+.m-footer ul.m-footer-navlist li a {
+  font-size: .22rem;
+  color: #8e9396;
+  line-height: .35rem;
+  display: block;
+  padding: .06rem 0;
+}
+/* 公共底部结束 */
+/*公共样式例如按钮 等共用UI*/
+/*公共宽度 一级标题 二级标题*/
+.width-common-wrapper {
+  width: 5rem;
+  margin: 0 auto;
+}
+.width-common-wrapper .title h1 {
+  font-size: .4rem;
+  text-align: center;
+  padding: .8rem 0 .1rem 0;
+   font-weight: normal;
+}
+.width-common-wrapper .title h2 {
+  font-size: .25rem;
+  color: #9ea3ad;
+  text-align: center;
+  font-weight: normal;
+}
+/*公共输入框 左侧图标 右侧输入框*/
+.common-input-wrapper {
+  width: 5rem;
+  position: relative;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  padding: .15rem 0;
+}
+.common-input-wrapper input.common-input-content {
+  width: 100%;
+  border: 1px solid #fcc2d5;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  height: .7rem;
+  line-height: .7rem;
+  border-radius: .1rem;
+  padding-left: .65rem;
+  padding-right: .2rem;
+  font-size: .25rem;
+  color: #9ea3ad;
+}
+.common-input-wrapper input.common-input-content::-webkit-input-placeholder{
+  color: #9ea3ad;
+}
+.common-input-wrapper input.common-input-content::-moz-placeholder{   /* Mozilla Firefox 19+ */
+  color: #9ea3ad;
+}
+.common-input-wrapper input.common-input-content:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+  color: #9ea3ad;
+}
+.common-input-wrapper input.common-input-content:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+  color: #9ea3ad;
+}
+.common-input-wrapper i.common-input-icon {
+  position: absolute;
+  left: .2rem;
+  top: 50%;
+  margin-top: -.19rem;
+  color: #f8739f;
+  font-size: .38rem;
+  font-weight: normal;
+}
+/* 公共确认 提交按钮 一行一个按钮 */
+.common-submit-wrapper {
+  text-align: center;
+}
+.common-submit-wrapper .common-submit-btn {
+  font-size: .25rem;
+  height: .6rem;
+  line-height: .6rem;
+  color: #fff;
+  border-radius: 1rem;
+  background-color: #f8739f;
+  padding: 0 .6rem;
+}
+/* 公共确认 单个提交按钮 一行一个按钮 仅设置其自身样式 */
+input.common-single-btn {
+  font-size: .25rem;
+  height: .6rem;
+  line-height: .6rem;
+  color: #fff;
+  border-radius: 1rem;
+  background-color: #f8739f;
+  padding: 0 .6rem;
+}
+/*公共按钮 一行2个按钮*/
+.common-double-btn-wrapper {
+  text-align: center;
+}
+.common-double-btn-wrapper input {
+  font-size: .25rem;
+  height: .6rem;
+  line-height: .6rem;
+  color: #fff;
+  border-radius: 1rem;
+  background-color: #e62f82;
+  padding: 0 .6rem;
+  margin: .2rem;  
+}
+/* 个人信息layer弹出层的样式 */
+.layui-layer.layui-layer-iframe.layer-anim#layui-layer1 {
+    top: 2rem;
+    left: 2rem;
+}
+
+/* 库存增减按钮样式 */
+.common-modify-amount {
+  overflow: hidden;
+}
+.common-modify-amount i {
+  float: left;
+  text-align: center;
+  color: #6f7071;
+  background-color: #f9f9f9; 
+  border: 1px solid #d6d5d5;
+  width: .4rem;
+  height: .4rem;
+  line-height: .4rem;
+  font-weight: normal;
+  font-size: .25rem;
+}
+
+.common-modify-amount input {
+  float: left;
+  width: .8rem;
+  text-align: center;
+  height: .4rem;
+  line-height: .4rem;
+  border-top: 1px solid #d6d5d5;
+  border-bottom: 1px solid #d6d5d5;
+}
+/* 库存增减按钮样式结束 */
