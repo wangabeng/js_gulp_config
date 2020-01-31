@@ -1,206 +1,359 @@
-# 具体用法见 https://blog.csdn.net/u012396955/article/details/79380407
-# ES6转换 排除jquery
+# gulp4入门指南
 
-# css不进行自动补全 只补全sass文件
+注：非gulp.task的形式，以下皆由箭头函数方式填写。
 
-# 使用gulp时常用的插件介绍及用法
+[Gulp](http://gulpjs.com/)是一个工具，可以帮助您完成Web开发的几项任务。它经常用于执行前端任务，例如：
 
-## 可用的插件
+Web服务器
+
+保存文件时自动重新加载浏览器
+
+使用Sass或LESS等预处理器
+
+优化CSS，JavaScript和图像等资源
+
+这是本文的用途,可以帮你使用学习gulp的基础知识
+
+##全局安装gulp-cli
 ```
-编译
-gulp-sass - 通过 libsass将Sass编译成 CSS
-
-gulp-ruby-sass - 通过 Ruby Sass将Sass编译成CSS
-
-gulp-compass - 通过 Ruby Sass和CompassSass编译成CSS
-
-gulp-less - Less编译成 CSS.
-
-gulp-stylus - Stylus 编译成 CSS.
-
-gulp-postcss - Pipe CSS 通过 PostCSS processors with a single parse.
-
-gulp-coffee - Coffeescript 编译成 JavaScript.
-
-gulp-typescript - TypeScript编译成JavaScript.
-
-gulp-react - Facebook React JSX 模板编译成JavaScript.
-
-webpack-stream - 将webpack集成在Gulp中使用。
-
-gulp-babel - ES6编译成ES5 通过 babel.
-
-gulp-traceur - ES6编译成ES5 通过 Traceur.
-
-gulp-regenerator - ES6编译成ES5 通过 Regenerator.
-
-gulp-myth - Myth - a polyfill for future versions of the CSS spec.
-
-合并
-gulp-concat - 合并文件.
-
-压缩
-gulp-clean-css - 压缩 CSS 通过 clean-css.
-
-gulp-csso - 压缩 CSS 通过 CSSO.
-
-gulp-uglify - 压缩 JavaScript 通过 UglifyJS2.
-
-gulp-htmlmin - 压缩 HTML 通过 html-minifier.
-
-gulp-minify-html - 压缩 HTML 通过 Minimize（包已被弃用，建议使用gulp-htmlmin）
-
-gulp-imagemin - 压缩 PNG, JPEG, GIF and SVG 图片 通过 imagemin.
-
-gulp-svgmin - 通过Gulp压缩 SVG 文件
-
-优化
-gulp-uncss - 移除未使用的CSS选择器通过 UnCSS.
-
-gulp-css-base64 - 将CSS文件中所有的资源(有url()声明的)变成base64-encoded 数据的URI字符串
-
-gulp-svg2png - 将SVGs转换成PNGs
-
-gulp-responsive - 生成不同尺寸的图片
-
-gulp-svgstore -将svg files 合并成一个通过 元素
-
-gulp-iconfont - 通过SVG icons创建 icon fonts
-
-资源注入
-gulp-useref - 解析HTML文件中特殊标签里面的script或style标签，合并成一个script或css文件，并替换。
-
-gulp-inject - 将指定的css或js文件以标签的形式插入到HTML中的指定标志内。
-
-wiredep - 将Bower依赖自动注入HTML文件中。
-
-模板
-gulp-angular-templatecache - 在$templateCache中联系并注册AngularJS模板
-
-gulp-jade - Jade 转换成 HTML.
-
-gulp-handlebars - Handlebars模板转换成 JavaScript.
-
-gulp-hb - Handlebars 模板转换成 HTML.
-
-gulp-nunjucks - Nunjucks模板转换成JavaScript.
-
-gulp-dustjs - Dust模板转换成JavaScript.
-
-gulp-riot - Riot模板转换成JavaScript.
-
-gulp-markdown - Markdown → HTML.
-
-gulp-template - Lodash 模板转换成JavaScript.
-
-gulp-swig - Swig模板转换成HTML.
-
-gulp-remark - Gulp plugin for [remark]的Gulp插件(https://github.com/wooorm/remark) 通过插件处理markdown
-
-代码校验
-gulp-csslint - 通过CSSLint自动校验CSS.
-
-gulp-htmlhint - 通过HTMLHint校验HTML.
-
-gulp-jshint - 通过JSHint发现错误和潜在的问题.
-
-gulp-jscs - 通过jscs检查JavaScript代码风格.
-
-gulp-coffeelint - 一种用来保证CoffeeScript代码风格统一的检查。
-
-gulp-tslint - gulp的TypeScript代码校验插件.
-
-gulp-eslint - ECMAScript/JavaScript代码校验.
-
-gulp-w3cjs - 通过w3cjs检验HTML.
-
-gulp-lesshint - 通过lesshint校验LESS.
-
-实时加载
-browser-sync - 保证多个浏览器或设备网页同步显示 (recipes).
-
-gulp-livereload - Gulp的实时加载插件.
-
-缓存
-gulp-changed - 仅让发生改变的文件通过.
-
-gulp-cached - 一个简单的文件内存缓存.
-
-gulp-remember - 记忆并回收通过了的文件.
-
-gulp-newer - 只让新的源码通过.
-
-流控制
-merge-stream - 合并多个流到一个插入的流.
-
-streamqueue - 逐渐输入队列的流.
-
-run-sequence - 按要求运行一些依赖的Gulptask.
-
-gulp-if - 按照条件运行task.
-
-日志
-gulp-notify - Gulp的通知插件.
-
-gulp-size - 显示你的项目的大小.
-
-gulp-debug - 通过调试文件流来观察那些文件通过了你的Gulp管道.
-
-测试
-gulp-mocha - 运行Mocha测试用例.
-
-gulp-jasmine - 在Node.js中运行Jasmine 2 测试用例.
-
-gulp-protractor - 为Protractor测试用例包裹Gulp.
-
-gulp-coverage - 为Node.js覆盖相对于运行的测试运行独立的报告.
-
-gulp-karma - 通过Gulp运行Karma测试用例.
-
-gulp-ava- 通过Gulp运行AVA 测试用例.
-
-其他插件
-gulp-util - 包含一系列有用插件.
-
-gulp-plumber - 防止错误引起管道中断Prevent pipe breaking caused by errors.
-
-gulp-load-plugins - 自动加载Gulp插件.
-
-main-bower-files - 构建时自动获取bower库的文件.
-
-autoprefixer - 解析CSS且根据规则添加浏览器兼容性前缀.
-
-gulp-sourcemaps - 提供source map支持.
-
-gulp-replace - Gulp的一个字符串替换插件.
-
-gulp-rename - 轻松重命名文件.
-
-gulp-rev - 在静态文件名的后面添加hash值，如: unicorn.css → unicorn-d41d8cd98f.css.
-
-del - 使用globs删除文件/文件夹.
-
-gulp-exec - 运行一个shell命令.
-
-gulp-strip-debug - 除去javascript代码中的console,alert,debugger声明.
-
-gulp-cssimport - 解析CSS文件，找到imports,将连接文件替换成imort声明.
-
-gulp-inline-css - 将HTML中的css属性放到style标签中.
-
-gulp-gh-pages - 将内容发布到GiHub有页面.
-
-gulp-ng-annotate - 通过ng-annotate添加Angular依赖注入.
-
-gulp-bump - 通过Gulp Bump任何semvar JSON版本.
-
-gulp-file-include - 通过Gulp Include文件.
-
-gulp-zip - 以ZIP格式压缩文件.
-
-gulp-git - 通过Gulp运行git命令.
-
-gulp-filter - 使用globbing过滤文件.
-
-gulp-preprocess - 基于自定义内容或环境配置预处理文件.
+  npm install --global gulp-cli
 ```
+进入自己项目根目录 创建package.json文件
+```
+  npm init
+```
+安装gulp
+```
+  npm initall --save-dev gulp
+```
+![gulp -v确认版本和截图匹配](https://upload-images.jianshu.io/upload_images/13236059-b4c7790e6dd33c34.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+##确定文件夹结构
+
+Gulp足够灵活，可以处理任何文件夹结构。在为项目调整之前，您只需了解内部工作原理。
+
+对于本文，我们将使用通用webapp的结构：
+```
+ - app/ 
+     scss/ 
+     images/  
+     js/  
+     index.html
+     index.scss 
+  dist/  
+  gulpfile.js  
+  node_modules/ 
+  package.json
+  tmp
+```
+在此结构中，我们将使用该app文件夹进行开发,dist用于包含生产站点的优化文件,.tmp用于浏览器预览开发。
+
+##编写第一个gulp任务
+
+使用Gulp的第一步是require在gulpfile中使用它
+```
+ gulpfile.js
+     const gulp=require('gulp');
+```
+require语句告诉Node查看node_modules名为的包的文件夹gulp。找到包后，我们将其内容分配给变量gulp
+
+现在可以开始编写gulp任务了 在这里你会学到gulp src() pipe() dest()等api的作用
+
+##编译sass
+
+src下创建index.scss
+
+src/scss下创建home.scss以及globals.scss
+
+home用来写页面所需的样式 globals用来导入home以及未来创建的scss,利用sass带的@import导入
+```
+ home.scss
+     body{
+           h1{
+                  background: #ccc; 
+              } 
+          }
+```
+```
+ globals.scss
+         @import 'home';
+```
+index.scss导入globals
+```
+ index.scss
+         @import "scss/globals"
+```
+![目前src的文件结构](https://upload-images.jianshu.io/upload_images/13236059-63552dc1ae1163a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+我们可以在一个名为[gulp-sass](https://www.npmjs.com/package/gulp-sass)的插件的帮助下将Sass编译为Gulp中的CSS 。
+```
+ bash
+     npm install gulp-sass --save-dev
+```
+require从node_modules文件夹中获取gulp-sass,从gulp中导入 src,dest;
+
+src创建流,从文件中读取对象,dest创建src导入的对象写入文件系统中
+```
+ gulpfile.js 
+     const {src,dest}=require('gulp');
+     const sass=require('gulp-sass');
+```
+编写编译sass 
+```
+ gulpfile.js
+ 
+         const scss = () =>src('src/index.scss')
+                                   .pipe(sass())
+                                   .pipe(dest('.tmp/'));
+         exports.scss = scss;
+```
+运行gulp scss
+```
+ bash 
+    gulp scss
+```
+![编译成功 如图所示](https://upload-images.jianshu.io/upload_images/13236059-6b0759a3991fabdc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+##编译js  es6 7转es5
+
+src/js下创建文件home.js,和page.js
+```
+ home.js 
+ //随便写句es6
+ let x = () => alert('成功');
+     x();
+```
+需要安装gulp-babel 以及babel-preset-env
+```
+ bash
+     npm install gulp-babel --save-dev
+     npm install babel-preset-env --save-dev
+```
+和scss同理 require找到gulp-babel模块
+    这里我们了解一下\*和!
+    js/*.js代表js下所有后辍名为.js的文件
+    匹配所有的js的文件后,如果有某个文件不想src取到,文件前加!
+```
+gulpfile.js
+     const babel=require('gulp-babel'); 
+     const js = () =>
+          src(['src/js/*.js', '!src/js/page.js'])
+           .pipe(babel({ 
+            "presets": ['env'] 
+              }))
+            .pipe(dest('.tmp/js'))
+      exports.js = js
+```
+
+```
+ bash
+     gulp js
+```
+![如图所示home.js编译成功 page.js成功的没有编译](https://upload-images.jianshu.io/upload_images/13236059-4ae36fc4f0913d75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+##图片转移进.tmp临时文件
+
+![img文件结构](https://upload-images.jianshu.io/upload_images/13236059-dc0e320b2923a83e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+同上,只需要src和dest
+```
+ gulpfile.js
+ const images = () =>
+   src('src/images/*.+(png| jpg | jpeg | gif | svg)', 'src/images/*/*.+(png| jpg | jpeg | gif | svg)')
+   .pipe(dest('.tmp/images')); 
+ exports.images = images
+```
+终端输入gulp images
+```
+ bash 
+     gulp images
+```
+![如图,转移成功](https://upload-images.jianshu.io/upload_images/13236059-31f87e8c848fd261.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+##html动态插入js文件
+
+安装插件gulp-inject
+```
+ bash
+     npm install gulp-inject --save-dev
+```
+  <!-- inject:js --><!-- endinject -->负责告诉gulp js文件从何处插入
+
+![html代码如图所示](https://upload-images.jianshu.io/upload_images/13236059-9a9ad44134f90beb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+编写gulpfile.js
+```
+ gulpfile.js 
+ const inject = require('gulp-inject'); 
+     const html=()=> 
+         src('./src/index.html') 
+         .pipe(inject(src(['.tmp/js/*.js'], { read: false, }), {
+             ignorePath: ['.tmp'], //去除tmp
+             addRootSlash: false, //去除/
+           }))
+         .pipe(dest('.tmp/'))
+ exports.html=html;
+```
+```
+ bash 
+     gulp html
+```
+![tmp下html文件如图,成功引入](https://upload-images.jianshu.io/upload_images/13236059-52bc5e5629896b64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+至此,tmp临时文件搭建完毕
+
+##搭建本地服务器环境
+
+需要插件browser-sync
+```
+ bash
+     npm install borwser-sync --save-dev
+```
+运行文件根目录为临时文件.tmp
+```
+ gulpfile.js 
+ const browserSync = require('browser-sync').create(); 
+     const watchs = () => 
+       browserSync.init({
+           server: { 
+             baseDir: '.tmp' 
+           }
+         }) 
+ exports.watchs = watchs
+```
+![如图搭建完成](https://upload-images.jianshu.io/upload_images/13236059-e939f4d04b5a09ae.gif?imageMogr2/auto-orient/strip)
+
+##watch监听文件
+
+gulp自带的watch监听功能,每当文件修改,运行某函数
+```
+ gulpfile.js 
+ const { src, dest,watch } = require('gulp'); 
+ const watchs = () => { 
+         watch('src/js/*.js', js) 
+         watch('src/scss/*.scss', scss) 
+         watch('src/index.html', html)
+         watch(['src/images/*.*','src/images/*/*.*'],images) 
+         browserSync.init({ 
+             server: { baseDir: '.tmp' } 
+             }) 
+             }
+ exports.watchs = watchs
+```
+![修改后刷新](https://upload-images.jianshu.io/upload_images/13236059-fcae31584d737c6b.gif?imageMogr2/auto-orient/strip)
+
+f5手动刷新很麻烦,更改之前的scss,js等函数,利用browser-sync实现更改自动刷新
+```
+ gulpfile.js 
+ let scss = () => 
+     src('./src/index.scss') 
+     .pipe(sass()) 
+     .pipe(dest('./.tmp/')) 
+     .pipe(browserSync.reload({
+      stream: true 
+     })); 
+ const images = () => 
+     src(['src/images/*.+(png| jpg | jpeg | gif | svg)', 'src/images/*/*.+(png| jpg | jpeg | gif | svg)']) 
+     .pipe(dest('.tmp/images'));         
+     .pipe(browserSync.reload({ 
+      stream: true }) 
+            ) 
+ const html = () => 
+     src('./src/index.html') 
+     .pipe(inject(src(['.tmp/js/*.js'], { read: false, }),{ 
+     ignorePath: ['.tmp'],        //去除tmp 
+     addRootSlash: false        / /去除/ 
+     })) 
+     .pipe(dest('.tmp/')) 
+     .pipe(browserSync.reload({ 
+     stream: true 
+     }))
+```
+运行之前的wathcs函数
+```
+ bash 
+     gulp watchs
+```
+更改app下的文件,你会发现浏览器已经成功自动刷新了
+
+推荐把众多函数expots成一句
+    series()顺序执行
+    parallel()并发运行
+```
+ gulpfile.js 
+         const { src, dest, watch, series,parallel } = require('gulp'); 
+         exports.serve = series(parallel(js, scss, images), html, watchs);
+```
+```
+ bash 
+     gulp serve
+```
+至此,本教程已经完成了一半,一个单页面项目的基本构建完成
+
+##打包压缩发布
+
+    线上项目为了提高访问速度,我们需要压缩以及合并文件
+    安装gulp-cssnano        gulp-imagemin           gulp-concat         gulp-uglify
+
+```
+ bash 
+     npm install gulp-cssnano  --save-dev 
+     npm install gulp-imagemin  --save-dev 
+     npm install  gulp-concat   --save-dev 
+     npm install  gulp-uglify --save-dev
+```
+```
+ gulpfile.js 
+ const cssnano = require('gulp-cssnano') //压缩css 
+ const imagemin = require('gulp-imagemin'); //图片压缩
+ const concat = require('gulp-concat') //合并js 
+ const uglify = require('gulp-uglify') //压缩js
+ 
+ const baleJs = () => 
+   src('src/js/*.js') 
+   .pipe(concat('index.js')) 
+   .pipe(babel({
+    "presets": ["env"] 
+   })) 
+   .pipe(uglify())//压缩js 
+   .pipe(dest('dist/')) 
+ const baleScss = () => 
+   src('./src/index.scss') 
+   .pipe(sass()) 
+   .pipe(cssnano())//压缩css 
+   .pipe(dest('./dist/'))
+ const baleImages = () => 
+   src(['src/images/*', 'src/images/*/*']) 
+   .pipe(imagemin())//压缩图片 
+   .pipe(dest('dist/images')) 
+ const baleHtml = () => 
+   src('src/index.html') 
+   .pipe(inject(src(['dist/index.js']), { 
+    ignorePath: ['dist'], //去除dist 
+    addRootSlash: false, //去除/ 
+   })) 
+   .pipe(dest('dist/'))
+```
+打包之前要删除原先的dist文件 安装npm的del
+```
+ bash 
+    npm install del --save-dev
+```
+```
+ gulpfile.js 
+    const del=requirt('del'); 
+    const naleDelete=()=>del(['dist'])
+```
+将打包逻辑组合
+```
+ gulpfile.js 
+    exports.bale = series(naleDelete, parallel(baleJs, baleScss, baleImages), baleHtml)
+```
+```
+ bash 
+    gulp bale
+```
+![打包成功](https://upload-images.jianshu.io/upload_images/13236059-09357fbb0c7feae5.gif?imageMogr2/auto-orient/strip)
+
+

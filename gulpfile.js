@@ -1,147 +1,63 @@
-'use strict';
+const { src, dest, watch, series,parallel } = require('gulp');
+const sass = require('gulp-sass'); //编译sass
+const babel = require('gulp-babel'); //编译成es5
+const inject = require('gulp-inject'); //动态插入js
+const browserSync = require('browser-sync').create(); //静态服务器
 
-var gulp         = require('gulp'),
-    browserSync  = require('browser-sync').create(),
-    reload       = browserSync.reload,
-    SSI          = require('browsersync-ssi'),
-    concat       = require('gulp-concat'),
-    minify       = require('gulp-minify'),
-    uglify       = require('gulp-uglify'),
-    plumber      = require('gulp-plumber'),
-    sass         = require('gulp-sass'),
-    zip          = require('gulp-zip'),
-    postcss      = require('gulp-postcss'),
-    autoprefixer = require('gulp-autoprefixer'),
-    pump         = require('pump'),
-    babel        = require('gulp-babel')
-    traceur      = require('gulp-traceur'); // ES6转ES5
+const cssnano = require('gulp-cssnano') //压缩css
+const imagemin = require('gulp-imagemin'); //图片压缩
+const concat = require('gulp-concat') //合并js
+const uglify = require('gulp-uglify') //压缩js
+const del = require('del');//删除文件
 
-// 端口为3000的本地服务
-gulp.task('serve', function() {
-    browserSync.init({
-        server: {
-            baseDir:["./dist"],
-            middleware:SSI({
-                baseDir:'./dist',
-                ext:'.shtml',
-                version:'2.10.0'
-            })
-        }
-    });
+//--serve-->
+const scss = () =>
+  src('src/scss/*.scss')
+  .pipe(sass())
+  .pipe(dest('dist/scss'))
+  .pipe(browserSync.reload({
+    stream: true
+  }))
 
-    gulp.watch("app/css/**/*.scss", ['sass']);
-    gulp.watch("app/js/**/*.js", ['js']);
-    gulp.watch("app/**/*.html", ['html']);
-}); 
+const js = () =>
+  src(['src/js/*.js', '!src/js/page.js'])
+  .pipe(babel({
+    "presets": ['env']
+  }))
+  .pipe(dest('dist/js'))
+  .pipe(browserSync.reload({
+    stream: true
+  }))
 
-// 处理sass成css并自动添加兼容 Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function(){
-  return gulp.src('app/css/*.scss')
-    .pipe(sass({
-        outputStyle: 'expanded'
-    }))
-    .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
-    .pipe(gulp.dest('dist/css'))
-    .pipe(reload({ stream:true }));
-});
+const images = () =>
+  src(['src/images/*.+(png| jpg | jpeg | gif | svg)', 'src/images/*/*.+(png| jpg | jpeg | gif | svg)'])
+  .pipe(dest('dist/images'))
+  .pipe(browserSync.reload({
+    stream: true
+  }));
 
-// 处理css 自动添加兼容 
-gulp.task('css', function(){
-  return gulp.src('app/css/*.css')
-    // css文件用sublime的alt+shift+ctrl+p 自动补全 不需要自动补全
-    // .pipe(autoprefixer({
-    //         browsers: ['last 2 versions'],
-    //         cascade: false
-    //     }))
-    .pipe(gulp.dest('dist/css'))
-    .pipe(reload({ stream:true }));
-});
+const html = () =>
+  src('./src/index.html')
+  .pipe(src(['dist/js/*.js'], { read: false, }), {
+    ignorePath: ['dist'], //去除tmp
+    addRootSlash: false, //去除/
+  })
+  .pipe(dest('dist/'))
+  .pipe(browserSync.reload({
+    stream: true
+  }));
+
+const watchs = () => {
+  watch('src/js/*.js', js)
+  watch('src/scss/*.scss', scss)
+  watch('src/index.html', html)
+  browserSync.init({
+    server: {
+      baseDir: 'dist'
+    }
+  })
+}
+//--end-->
 
 
-// 处理 不需要ES6转换的js javscript files operate
-gulp.task('js', function() {
-   var jsSrc = ['app/js/*.js', '!app/js/*.es6.js'];
-
-   return gulp.src(jsSrc)
-       // .pipe(uglify())    //压缩
-       .pipe(gulp.dest('dist/js'))
-       .pipe(reload({ stream:true }));  //输出
-
-});
-
-// 处理 ES6编译 用traceur
-// gulp.task('js_es6', function() {
-//    var jsSrc = ['app/js/*.es6.js'];
-
-//    return gulp.src(jsSrc)
-//        .pipe(traceur()) // ES6转换
-//        // .pipe(uglify({
-//        //      preserveComments: 'all' 
-//        // }))
-//        .pipe(gulp.dest('dist/js'))
-//        .pipe(reload({ stream:true }));  //输出
-   
-// });
-
-// 处理 ES6编译 用babel  安装 npm install --save-dev gulp-babel @babel/core @babel/preset-env
-gulp.task('js_es6', function() {
-   var jsSrc = ['app/js/*.es6.js'];
-
-   return gulp.src(jsSrc)
-       .pipe(babel({
-            presets: ['@babel/env']//presets字段设定转码规则
-       })) // ES6转换
-       .pipe(uglify({
-            preserveComments: 'no' 
-       }))
-       .pipe(gulp.dest('dist/js'))
-       .pipe(reload({ stream:true }));  //输出
-   
-});
-
-// 处理 html 文件
-gulp.task('html', function() {
-    
-    return gulp.src("app/*.html")
-        .pipe(plumber())        
-        .pipe(gulp.dest("dist/"))
-        .pipe(browserSync.stream());
-});
-
-// 处理图片
-gulp.task('img', function() {
-    
-    return gulp.src("app/img/*.*")
-        .pipe(gulp.dest("dist/img/"))
-        .pipe(browserSync.stream());
-});
-
-// 处理字体
-gulp.task('fonts', function() {
-    
-    return gulp.src("app/fonts/*.*")
-        .pipe(gulp.dest("dist/fonts/"))
-        .pipe(browserSync.stream());
-});
-
-// 处理layer
-gulp.task('layer', function() {
-    
-    return gulp.src("app/layer/**")
-        .pipe(gulp.dest("dist/layer/"))
-        .pipe(browserSync.stream());
-});
-
-// publish (未测试 无此需求)
-// gulp.task('publish', function(){
-//     return gulp.src('dist/**/*')
-//         .pipe(plumber())
-//         .pipe(zip('publish.zip'))
-//         .pipe(gulp.dest('release'))
-// });
-
-// 编辑默认任务
-gulp.task('default', ['sass', 'css', 'js','js_es6', 'html', 'img', 'fonts', 'serve', 'layer']);
+exports.serve = series(parallel(js, scss, images), html, watchs);
